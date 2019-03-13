@@ -1,26 +1,40 @@
 version: '2'
+
+volumes:
+    pgmaster:
+    pgslave1:
+    pgslave2:
+    
 services:
   master:
     container_name: master
-    image: polinux/postgres-bdr
+    image: postgres-bdr
     restart: always
     hostname: master
+    ports:
+    - 5432:5432
+    volumes:
+       - pgmaster:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: testpass
-      POSTGRES_USER: admin
-      POSTGRES_DB: mydb
+      POSTGRES_PASSWORD: postgresPassword
+      POSTGRES_USER: postgresUser
+      POSTGRES_DB: databaseName
       MODE: master
       MASTER_PORT: 5432
 
   slave1:
     container_name: slave1
-    image: polinux/postgres-bdr
+    image: postgres-bdr
     restart: always
     hostname: slave1
+    ports:
+    - 5433:5432
+    volumes:
+       - pgslave1:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: testpass
-      POSTGRES_USER: admin
-      POSTGRES_DB: mydb
+      POSTGRES_PASSWORD: postgresPassword
+      POSTGRES_USER: postgresUser
+      POSTGRES_DB: databaseName
       MODE: slave
       MASTER_ADDRESS: master_ip
       MASTER_PORT: 5432
@@ -30,13 +44,17 @@ services:
 
   slave2:
     container_name: slave2
-    image: polinux/postgres-bdr
+    image: postgres-bdr
     restart: always
     hostname: slave2
+    ports:
+    - 5434:5432
+    volumes:
+       - pgslave2:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: testpass
-      POSTGRES_USER: admin
-      POSTGRES_DB: mydb
+      POSTGRES_PASSWORD: postgresPassword
+      POSTGRES_USER: postgresUser
+      POSTGRES_DB: databaseName
       MODE: slave
       MASTER_ADDRESS: master_ip
       MASTER_PORT: 5432

@@ -10,6 +10,8 @@ ENV \
       POSTGRES_USER=postgres \
       POSTGRES_DB=postgres \
       POSTGRES_PORT=5432 \
+      POSTGRES_SHAREDBUFFERS=1GB \
+      POSTGRES_MAXCONNECTIONS=1024 \
       MODE=single \
       MASTER_ADDRESS=localhost \
       MASTER_PORT=5432 \

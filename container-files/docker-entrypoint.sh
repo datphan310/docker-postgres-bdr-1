@@ -2,6 +2,8 @@
 set -e
 
 if [ "$1" = 'postgres' ]; then
+	mkdir -p "$PGDATA"
+	chmod 700 "$PGDATA"
 	chown -R postgres "$PGDATA"
 
 	chmod g+s /run/postgresql
@@ -72,6 +74,8 @@ if [ "$1" = 'postgres' ]; then
       echo "max_replication_slots = 10";
       echo "max_worker_processes = 10";
       echo "port = $POSTGRES_PORT";
+      echo "shared_buffers = $POSTGRES_SHAREDBUFFERS";
+      echo "max_connections = $POSTGRES_MAXCONNECTIONS";
     } >> "$PGDATA"/postgresql.conf
 
 		if [ -d /docker-entrypoint-initdb.d ]; then
